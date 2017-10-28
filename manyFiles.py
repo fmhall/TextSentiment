@@ -7,8 +7,9 @@ from textblob import TextBlob
 import numpy as np
 import math
 import sys
+from datetime import datetime
 
-path = "/Users/masonhall/Documents/Github/Records/"
+path = "/Users/masonhall/Documents/Github/RecordsCleaned/"
 fileName = "+19734070883"
 contact_avgs = []
 my_avgs = []
@@ -47,13 +48,12 @@ def readAllFiles(path):
     print("Maximum: {:.5}".format(max(my_avgs)))
     print("--Number: {0}".format(numbers[my_max_index]))
     print("Mean: {:.5}".format(np.mean(my_avgs)))
+    print("--------\n\n")
 
 
 
 def parseFile(path):
-    global contact_avgs
-    global my_avgs
-    global numbers
+
     number = "Couldnt get number"
     with open(path) as file :
         for line in file :
@@ -65,7 +65,8 @@ def parseFile(path):
         contact_sentiments = []
         my_texts = []
         my_sentiments = []
-        
+        contact_dates = []
+        my_dates = []
         for line in file :
             if line.startswith("+") :
                 for index, char in enumerate(line) :
@@ -80,6 +81,9 @@ def parseFile(path):
                 my_texts.append(text)
                 blobObj = TextBlob(text)
                 my_sentiments.append(blobObj.sentiment.polarity)
+            elif line.startswith("@") :
+                date = line[3:21]
+                break
     contact_sentiments = list(filter((0.0).__ne__, contact_sentiments))
     my_sentiments = list(filter((0.0).__ne__, my_sentiments))
     contact_avg = np.mean(contact_sentiments)
