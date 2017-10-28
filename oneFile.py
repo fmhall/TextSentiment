@@ -42,6 +42,12 @@ def parseFile(path):
                 contact_texts.append(text)
                 blobObj = TextBlob(text)
                 contact_sentiments.append(blobObj.sentiment.polarity)
+                line = file.readline()
+                while line != "" :
+                    if line.startswith("+") :
+                        number = line[2:12]
+                        break
+                    line = file.readline()
                 inDate = file.readline()[3:21]
                 d = datetime.strptime(inDate, "%Y-%m-%d %H:%M:%S")
                 contact_dates.append(d)
